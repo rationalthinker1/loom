@@ -78,19 +78,19 @@ if [[ "${SHELL}" != *"zsh"* ]]; then
 	exit
 fi
 
-_loom_usage() {
-echo "${Red}loom ${Yellow}[OPTION] ${Blue}[LIST]${Color_Off} [ARGUMENT]
+function _loom_usage() {
+echo "${Red}loom ${Yellow}[OPTION] ${Blue}[LIST] ${Green}[SNIPPET]${Color_Off}
 Look up snippets of texts through a single work. Used mostly for commands that you use commonly.
 for example,
   # to add snippets to list 'wget'
-  - ${Red}loom ${Yellow}add ${Blue}wget${Color_Off} wget -O wordpress.zip https://wordpress.org/latest.zip #download as filename
-  - ${Red}loom ${Yellow}add ${Blue}wget${Color_Off} wget -P /opt/wordpress https://wordpress.org/latest.zip #download in folder
+  - ${Red}loom ${Yellow}add ${Blue}wget ${Green}wget -O wordpress.zip https://wordpress.org/latest.zip #download as filename${Color_Off}
+  - ${Red}loom ${Yellow}add ${Blue}wget ${Green}wget -P /opt/wordpress https://wordpress.org/latest.zip #download in folder${Color_Off}
 
   # to view 'wget' snippets
-  - loom view wget
+  - ${Red}loom ${Yellow}add ${Blue}wget${Color_Off}
 
   # to edit 'wget' as text file
-  - loom edit wget
+  - ${Red}loom ${Yellow}edit ${Blue}wget${Color_Off}
 "
 }
 
@@ -98,8 +98,8 @@ for example,
 for i in "$@"; do
   case $i in
   --help)
-    force=true
     _loom_usage
+    exit
     ;;
   -d=* | --date=*)
     date="${i#*=}"
