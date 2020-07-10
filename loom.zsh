@@ -93,4 +93,35 @@ for example,
   - loom edit wget
 "
 }
-_loom_usage
+
+
+for i in "$@"; do
+  case $i in
+  --help)
+    force=true
+    _loom_usage
+    ;;
+  -d=* | --date=*)
+    date="${i#*=}"
+    production_backup_filename="${date}_production"
+    server_filename="${production_backup_filename}.sql.gz"
+    local_filename="${tenant}_${server_filename}"
+    ;;
+  -ls | --latest-archived)
+    # echo $(find -type f -name  "ecoenergy*.sql.gz" -exec ls -1tc "{}" +;) | head -n 1 | cut -d_ -f 2
+    date=$(find "${BACKUP_DIR}" -type f -name "${tenant}*.sql.gz" -exec ls -1tc "{}" + | head -n 1 | cut -d_ -f 2)
+    if [[ -z "$date" ]]; then
+      force=true
+    else
+      production_backup_filename="${date}_production"
+      server_filename="${production_backup_filename}.sql.gz"
+      local_filename="${tenant}_${server_filename}"
+    fi
+    ;;
+  *)
+    # unknown option
+    ;;
+  esac
+done
+
+
